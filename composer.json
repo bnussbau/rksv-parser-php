@@ -1,0 +1,23 @@
+{
+    "name": "bnussbau/rksv-parser-php",
+    "description": "Parses Austrian RKSV String and extracts information",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bnussbau\\Rksv\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Benjamin Nussbaum",
+            "email": "bnussbau@users.noreply.github.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11.1"
+    }
+}
