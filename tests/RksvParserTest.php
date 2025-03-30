@@ -4,6 +4,7 @@ class RksvParserTest extends \PHPUnit\Framework\TestCase
 {
     private \Bnussbau\Rksv\RksvParser $parser;
     private \Bnussbau\Rksv\RksvParser $parser2;
+    private \Bnussbau\Rksv\RksvParser $parser3;
 
     protected function setUp(): void
     {
@@ -116,5 +117,22 @@ class RksvParserTest extends \PHPUnit\Framework\TestCase
     public function testCompanyEuVatIdReturnsNullWhenNoAtu()
     {
         $this->assertNull($this->parser3->getCompanyEuVatId());
+    }
+
+    public function testFromSparJson()
+    {
+        $jsonResponse = '{"code":"_R1-AT0_0487502_0404875001001202203314713_2022-03-31T17:16:44_0,00_1,89_0,00_0,00_0,00_oIY9ibHmpIc=_U:ATU33803701-3_NEen0fnOY9M=_H+KLP63QRYvxajhywX3JDskJeQdtPzMN6eUOVV7fAMxiRb9WyAWRMB06ynFB7hpeCGFM34adT14BcWpx0PGxnA=="}';
+        $parser = \Bnussbau\Rksv\RksvParser::fromSparJson($jsonResponse);
+        
+        $this->assertInstanceOf(\Bnussbau\Rksv\RksvParser::class, $parser);
+        $this->assertEquals(1.89, $parser->getSumTaxSetReduced1());
+    }
+
+    public function testFromSparJsonHandlesInvalidResponse()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid response format from SPAR URL');
+        
+        \Bnussbau\Rksv\RksvParser::fromSparJson('invalid json');
     }
 }

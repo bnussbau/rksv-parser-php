@@ -196,6 +196,22 @@ class RksvParser
         $val = preg_replace('/\.(?=.*\.)/', '', $val);
         return floatval($val);
     }
+
+    /**
+     * Creates a RksvParser instance from a SPAR API JSON response
+     * 
+     * @param string $jsonResponse The JSON response from SPAR API
+     * @return self The RksvParser instance
+     * @throws \RuntimeException If the response format is invalid
+     */
+    public static function fromSparJson(string $jsonResponse): self
+    {
+        $data = json_decode($jsonResponse, true);
+        if (!is_array($data) || !isset($data['code']) || !is_string($data['code'])) {
+            throw new \RuntimeException('Invalid response format from SPAR URL');
+        }
+        return new self($data['code']);
+    }
 }
 
 
