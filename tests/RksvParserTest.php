@@ -12,6 +12,9 @@ class RksvParserTest extends \PHPUnit\Framework\TestCase
 
         $rksvString2 = "_R1-AT0_633/029_003-2024-04-13T08:54:54MSR7520_2024-04-13T08:54:54_5,20_22,98_11,37_0,00_0,00_H7tLtJNt8y4=_U:ATU78172745-2_iUIdqDTkZTA=_RVYFIO0aQa1myJC5VPlFQPZv0xz+T4Sf2PkxGG46r0c+Xn6p7OLG36/IUY9we2c4S3NkVJuEPGBqs4QBzoqjaQ==";
         $this->parser2 = new \Bnussbau\Rksv\RksvParser($rksvString2);
+
+        $rksvString3 = "_R1-AT1_20_ft3BC78#244032_2019-03-14T06:34:16_0,00_4,85_0,00_0,00_0,00_xP4UGTE=_6e638f48_EYy7W7C64no=_zqnBp82MIUuKNrqmAGyvHl+/zRASI5tRONW6as6H9HtVa5CI1YLbQY9csXeuC0T3dZYidnZR8K9IOKBlEVgkdA==";
+        $this->parser3 = new \Bnussbau\Rksv\RksvParser($rksvString3);
     }
 
     public function testCanGetCashRegisterAlgorithmIdentifier()
@@ -108,5 +111,10 @@ class RksvParserTest extends \PHPUnit\Framework\TestCase
     public function testCanGetAmountTaxSetZero()
     {
         $this->assertEquals(0, $this->parser2->getAmountTaxSetZero());
+    }
+
+    public function testCompanyEuVatIdReturnsNullWhenNoAtu()
+    {
+        $this->assertNull($this->parser3->getCompanyEuVatId());
     }
 }

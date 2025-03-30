@@ -17,9 +17,6 @@ class RksvParser
             throw new \InvalidArgumentException('Invalid Rksv string format.');
         }
 
-        $companyIDCleaned = preg_replace('/-.*$/', '', $parts[11]);
-        $companyIDCleaned = str_replace('U:', '', $companyIDCleaned);
-
         $this->data = [
             'cashRegisterAlgorithmIdentifier' => $parts[1], // Registrierkassenalgorithmuskennzeichen
             'cashRegisterID' => $parts[2], // Kassen-ID
@@ -32,10 +29,18 @@ class RksvParser
             'sumTaxSetSpecial' => $parts[9], // Betrag-Satz-Besonders
             'turnoverCounterAES256ICM' => $parts[10], // Stand-Umsatz-Zähler-AES256-ICM
             'certificateSerialNumber' => $parts[11], // Zertifikat-Seriennummer
-            'companyIDCleaned' => $companyIDCleaned,
+            'companyIDCleaned' => $this->extractCompanyId($parts[11]),
             'signatureValuePreviousReceipt' => $parts[12], // Sig-Voriger-Beleg
             'signatureValue' => $parts[13], // Sig-Wert
         ];
+    }
+
+    private function extractCompanyId(string $certificateSerialNumber): ?string
+    {
+        $companyId = preg_replace('/-.*$/', '', $certificateSerialNumber);
+        $companyId = str_replace('U:', '', $companyId);
+        
+        return str_contains($companyId, 'ATU') ? $companyId : null;
     }
 
     public function getCashRegisterAlgorithmIdentifier()
