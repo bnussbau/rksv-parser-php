@@ -212,6 +212,11 @@ class RksvParser
         }
         return new self($data['code']);
     }
+
+    public function toArray(): array
+    {
+        return $this->data;
+    }
 }
 
 
